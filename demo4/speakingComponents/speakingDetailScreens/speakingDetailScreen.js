@@ -10,6 +10,7 @@ import CheckIcon from 'react-native-vector-icons/MaterialCommunityIcons' //speak
 import PauseIcon from 'react-native-vector-icons/MaterialCommunityIcons' //pause-circle
 import RecIconForPlaying from 'react-native-vector-icons/Foundation' //record
 import CheckIconForPlaying from 'react-native-vector-icons/MaterialCommunityIcons' //speaker-wireless
+import Sound from 'react-native-sound';
 
 class ButtonsComponent extends Component{
     constructor(args){
