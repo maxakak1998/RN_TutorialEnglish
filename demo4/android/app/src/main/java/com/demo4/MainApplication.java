@@ -3,7 +3,6 @@ package com.demo4;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.rnim.rn.audio.ReactNativeAudioPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -38,7 +37,6 @@ public class MainApplication extends NavigationApplication {
             // Add additional packages you require here
                     // No need to add RnnPackage and MainReactPackage
                             return Arrays.<ReactPackage>asList(
-                                    new ReactNativeAudioPackage()
                         // eg. new VectorIconsPackage()
                             );
         }

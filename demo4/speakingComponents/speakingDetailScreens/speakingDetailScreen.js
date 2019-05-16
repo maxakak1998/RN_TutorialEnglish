@@ -10,10 +10,6 @@ import CheckIcon from 'react-native-vector-icons/MaterialCommunityIcons' //speak
 import PauseIcon from 'react-native-vector-icons/MaterialCommunityIcons' //pause-circle
 import RecIconForPlaying from 'react-native-vector-icons/Foundation' //record
 import CheckIconForPlaying from 'react-native-vector-icons/MaterialCommunityIcons' //speaker-wireless
-import { 
-    AudioPlayer, 
-    AudioRecorder, 
-  } from 'react-native-audio-player-recorder';
 
 class ButtonsComponent extends Component{
     constructor(args){
@@ -34,8 +30,6 @@ class ButtonsComponent extends Component{
         const pauseConst=<PauseIcon onPress={()=>{
             if(this.state.isPlaying===true){
                 this.setState({isPlaying:false});
-                AudioPlayer.stop()
-                console.log('stop');
 
             }else
             {
@@ -53,11 +47,7 @@ class ButtonsComponent extends Component{
             }else
             {
                 this.setState({isPlaying:true});
-                (()=>{
-                    AudioPlayer.playWithUrl('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
-                    console.log('play');
-
-                })();
+              
 
             }
         }} 

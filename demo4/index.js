@@ -40,3 +40,4 @@ import { Navigation } from 'react-native-navigation';
      });
  });
  console.disableYellowBox = true;
+ 
