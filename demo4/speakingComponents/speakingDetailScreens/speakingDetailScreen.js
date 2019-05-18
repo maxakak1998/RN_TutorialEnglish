@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
-import {View,StyleSheet,Alert,Text} from 'react-native';
+import {View,StyleSheet,Alert,Text,Dimensions} from 'react-native';
 import faker from 'faker';
 import { Navigation } from 'react-native-navigation';
+import Slider from '@react-native-community/slider';
 
 import PlayIcon from 'react-native-vector-icons/AntDesign' //play
 import RecIcon from 'react-native-vector-icons/MaterialCommunityIcons' //record
@@ -10,7 +11,43 @@ import CheckIcon from 'react-native-vector-icons/MaterialCommunityIcons' //speak
 import PauseIcon from 'react-native-vector-icons/MaterialCommunityIcons' //pause-circle
 import RecIconForPlaying from 'react-native-vector-icons/Foundation' //record
 import CheckIconForPlaying from 'react-native-vector-icons/MaterialCommunityIcons' //speaker-wireless
-import Sound from 'react-native-sound';
+// import Sound from 'react-native-sound';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+const sounder = new AudioRecorderPlayer();
+const screenWidth=Dimensions.get('screen').width;
+const screenHeight=Dimensions.get('screen').height;
+
+class SliderComponent extends Component{
+    constructor(args){
+        super(args);
+    }
+    render(){
+        return(
+            <View 
+            style={styles.sliderContainer}
+            >
+
+            <Text
+            style={styles.currentPositionSecStyle}
+            >
+            0
+            </Text>
+                
+            <Slider
+            style={styles.sliderStyle}
+            />
+
+            <Text
+            style={styles.durationPlayerTime}
+            >
+            4:10
+            </Text>
+            </View>
+            
+        );
+    }
+
+}
 
 class ButtonsComponent extends Component{
     constructor(args){
@@ -23,34 +60,44 @@ class ButtonsComponent extends Component{
 
     }
 
-    play(){
-        AudioPlayer.playWithUrl('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+  
+    onStopPlayer=async()=>{
+        console.log('stop player');
+        sounder.stopPlayer();
+        sounder.removePlayBackListener();
+    }
+
+    onStartPlayer=async()=>{
+        console.log('start player');
+        const msg=await sounder.startPlayer('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+        // sounder.addPlayBackListener((e)=>{
+        //     console.log(e);
+        // });
+        // console.log('msg: '+msg);
+    }
+
+
+    audioController(){
+
+        if(this.state.isPlaying){
+            this.onStopPlayer();
+        }else
+        {
+           this.onStartPlayer();
+        }
 
     }
     render(){
         const pauseConst=<PauseIcon onPress={()=>{
-            if(this.state.isPlaying===true){
-                this.setState({isPlaying:false});
-
-            }else
-            {
-                this.setState({isPlaying:true});
-
-                
-            }
+           this.setState({isPlaying:false});
+            this.audioController();
         }} 
         name='pause' size={35} color='red' style={styles.playIconStyle}/>;
 
         const playConst= <PlayIcon onPress={()=>{
-            if(this.state.isPlaying===true){
-                this.setState({isPlaying:false});
+           this.setState({isPlaying:true});
+            this.audioController();
 
-            }else
-            {
-                this.setState({isPlaying:true});
-              
-
-            }
         }} 
         name='play' size={35} color='black' style={styles.playIconStyle}/>;
 
@@ -71,8 +118,11 @@ class ButtonsComponent extends Component{
             }
         }} name='record' size={35} color='red' style={styles.recIconStyle} />;
 
+
         return(
-            <View style={styles.playAndRecContainerStyle}>
+             <View style={styles.buttonContainer}>
+                             <SliderComponent/>
+                             <View style={styles.playAndRecContainerStyle}>
             <View style={{justifyContent:'center',alignItems:'center'}}>
                  {this.state.isRecording?saveRecordConst:recordConst}       
                 <Text style={{color:'black'}}>Record</Text>
@@ -86,6 +136,9 @@ class ButtonsComponent extends Component{
                 <Text style={{color:'black'}}>Replay</Text>
             </View>
         </View>
+
+             </View>   
+         
         //    {this.state.isReplaying?{color:'red'}:{color:'black'}}
         );
     }
@@ -118,10 +171,8 @@ export default class SpeakingDetailScreen extends Component{
 
             </Text>
             <View style={styles.crossinglineStlye}/>
-            <ButtonsComponent/>
-
-    
-          
+            <ButtonsComponent
+            />
             </View>
         );
     }
@@ -166,6 +217,35 @@ const styles = StyleSheet.create({
     },
     playIconStyle:{
         
+    },
+    sliderStyle:{
+        height:50,
+        width:screenWidth-100,
+
+    },
+    sliderContainer:{
+        justifyContent:'center',
+        alignItems:'center',
+        flex:1,
+        flexDirection:'row'
     }
+    ,
+    buttonContainer:{
+        flex:1
+    }
+    ,
+    childView:{
+        flex:1
+    },
+    currentPositionSecStyle:{
+        color:'black',
+        fontWeight:'bold',
+        fontSize:15
+    },
+    durationPlayerTime:{
+        color:'black',
+        fontWeight:'bold',
+        fontSize:15
+        }
 
 });

@@ -3,6 +3,7 @@ package com.demo4;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.slider.ReactSliderPackage;
 import com.dooboolab.RNAudioRecorderPlayerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
@@ -40,7 +41,8 @@ public class MainApplication extends NavigationApplication {
                     // No need to add RnnPackage and MainReactPackage
                             return Arrays.<ReactPackage>asList(
                                     new RNSoundPackage(),
-                                    new RNAudioRecorderPlayerPackage()
+                                    new RNAudioRecorderPlayerPackage(),
+                                    new ReactSliderPackage()
                         // eg. new VectorIconsPackage()
                             );
         }
