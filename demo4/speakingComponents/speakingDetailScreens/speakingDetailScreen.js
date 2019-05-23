@@ -82,16 +82,18 @@ class ButtonsComponent extends Component {
 
   componentWillUpdate() {
     console.log("will update");
-    console.log("is loading:" + this.state.isLoading);
-    console.log("is playing: " + this.state.isPlaying);
+    console.log("is loading at will update: " + this.state.isLoading);
+    console.log("is playing at will update: " + this.state.isPlaying);
   }
 
    componentDidUpdate(prevPro,prevState) {
-    if(this.state.isLoading!=prevState.isLoading){
-       console.log('different');
-        this.playAudio();  
-    }
-   
+    // if(this.state.isLoading!=prevState.isLoading){
+    //    console.log('different');
+    //     this.playAudio();  
+    // }
+    console.log("did update");
+    console.log("is loading at did update: " + this.state.isLoading);
+    console.log("is playing at did update:: " + this.state.isPlaying);
   }
 
   onStopPlayer = async () => {
@@ -105,6 +107,7 @@ class ButtonsComponent extends Component {
     const msg =  await sounder.startPlayer(
       "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
     );
+   
     console.log("onStartPlayer: go go go");
     //set state for isLoading to false
       this.setState({ isLoading: false });
@@ -173,8 +176,10 @@ class ButtonsComponent extends Component {
       <PlayIcon
         onPress={ () => {
           this.setState({ isPlaying: true });
-          this.setState({ isLoading: true });
-          console.log("set state in playconst");
+          this.setState({ isLoading: true },()=>{
+          this.playAudio();
+          });
+          console.log("set state in playConst");
           console.log("is playing at playConst: " + this.state.isPlaying);
         }}
         name="play"
@@ -230,9 +235,9 @@ class ButtonsComponent extends Component {
             <Text style={{ color: "black" }}>Record</Text>
           </View>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
-            {/* {(this.state.isLoading&&this.state.isPlaying)?loaderConst:(this.state.isPlaying?pauseConst:playConst)} */}
+            {(this.state.isLoading)?loaderConst:(this.state.isPlaying?pauseConst:playConst)}
             {/* {this.state.isPlaying?pauseConst:playConst} */}
-            {this.state.isLoading ? loaderConst : playConst}
+            {/* {this.state.isLoading ? loaderConst : playConst} */}
 
             {/* {playConst} */}
             <Text style={{ color: "black" }}>Play</Text>
