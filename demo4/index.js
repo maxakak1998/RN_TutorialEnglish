@@ -17,9 +17,27 @@ import { Navigation } from 'react-native-navigation';
                 center:{
                     stack:{
                         children:[
-                            {
+                            {component:{
+                                name:'ListeningDetail',
+                                
+                              
+                                
+                            },
                                 component:{
-                                    name:'SpeakingDetail'
+                                    name:'SpeakingDetail',
+                                    options:{
+                                        topBar:{
+                                            leftButtons:{
+                                                color:'red'
+                                              }
+                                        }
+                                    }
+                                  
+                                    
+                                },
+
+                                component:{
+                                    name:'Listening'
                                 },
                                 component:{
                                     name:'Speaking'
@@ -40,4 +58,5 @@ import { Navigation } from 'react-native-navigation';
      });
  });
  console.disableYellowBox = true;
+ 
  

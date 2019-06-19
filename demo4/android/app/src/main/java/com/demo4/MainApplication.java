@@ -3,6 +3,8 @@ package com.demo4;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.react.rnspinkit.RNSpinkitPackage;
+import com.rnfs.RNFSPackage;
 import com.reactnativecommunity.slider.ReactSliderPackage;
 import com.dooboolab.RNAudioRecorderPlayerPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -42,7 +44,9 @@ public class MainApplication extends NavigationApplication {
                             return Arrays.<ReactPackage>asList(
                                     new RNSoundPackage(),
                                     new RNAudioRecorderPlayerPackage(),
-                                    new ReactSliderPackage()
+                                    new ReactSliderPackage(),
+                                    new RNSpinkitPackage(),
+                                    new RNFSPackage()
                         // eg. new VectorIconsPackage()
                             );
         }

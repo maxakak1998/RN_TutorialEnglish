@@ -25,46 +25,13 @@ const ViewTypes = {
 };
 const screenHeight = Dimensions.get("screen").height;
 const screenWidth = Dimensions.get("screen").width;
-
-// class CellContainer extends Component{
-//   render(){
-//      return(
-//        <ImageBackground
-// style={{
-// height: screenWidth / 2 - 10,
-// width: screenWidth,
-// justifyContent: "flex-end"
-// }}
-// source={{ uri: data.image }}
-// >
-// <View style={{ backgroundColor: "rgba(0, 0, 0, .3)", padding: 10 }}>
-// <Text
-
-//   phần chuyển màn hình đây ạ !!!!
-    
-//   /
-//   style={{
-//     fontWeight: "bold",
-//     color: "white",
-//     fontSize: 20,
-//     marginRight: 10
-//   }}
-// >
-//   {data.name}
-// </Text>
-// </View>
-// </ImageBackground> 
-//   );
-//   }
-// }
 class TopicContainer extends Component {
-
-  componentDidMount(){
-    console.log('component did mount : ');
+  componentDidMount() {
+    console.log("component did mount : ");
     console.log(this.props._componentID);
+    console.log("Topic name is " + this.props.topicName);
   }
   constructor(args) {
-    
     super(args);
     this._generateLessons();
     this.state = {
@@ -82,63 +49,61 @@ class TopicContainer extends Component {
         dim.width = screenWidth;
       }
     );
-
-  }   
- /// đây là cái rowrenderer của thằng Recyclerlistview ạ !!!! Em đang muốn tạo onPress cho thằng Text phía dưới !!
+  }
   _rowRenderer = (type, data) => {
     console.log("row renderer : ");
     console.log(data);
-    
+
     return (
       <TouchableOpacity
-       onPress={() => {
-    Navigation.push(this.props._componentId, {
-      component: {
+        onPress={() => {
+          Navigation.push(this.props._componentId, {
+            component: {
               name: "SpeakingDetail",
-              passProps:{
-                title:data.name
+              passProps: {
+                title: data.name,
+                topicName: this.props.topicName
               },
-              options:{
-                animations:{
-                  push:{
-                    enabled:false
+              options: {
+                animations: {
+                  push: {
+                    enabled: false
                   }
                 },
-                topBar:{
-                  title:{
-                    text:'Speaking lessons'
-                  }
+                topBar: {
+                  title: {
+                    text: "Speaking lessons"
+                  },
+                  leftButtonColor: "red"
                 }
               }
             }
-    });
-  }}
-  activeOpacity={10}
-      >
-<ImageBackground
-      style={{
-      height: screenWidth / 2 - 10,
-      width: screenWidth,
-      justifyContent: "flex-end"
-      }}
-      source={{ uri: data.image }}
-      
-      >
-      <View style={{ backgroundColor: "rgba(0, 0, 0, .3)", padding: 10 }}>
-      <Text  
-        style={{
-          fontWeight: "bold",
-          color: "white",
-          fontSize: 20,
-          marginRight: 10
+          });
         }}
+        activeOpacity={10}
       >
-        {data.name}
-      </Text>
-      </View>
-      </ImageBackground> 
+        <ImageBackground
+          style={{
+            height: screenWidth / 2 - 10,
+            width: screenWidth,
+            justifyContent: "flex-end"
+          }}
+          source={{ uri: data.image }}
+        >
+          <View style={{ backgroundColor: "rgba(0, 0, 0, .3)", padding: 10 }}>
+            <Text
+              style={{
+                fontWeight: "bold",
+                color: "white",
+                fontSize: 20,
+                marginRight: 10
+              }}
+            >
+              {data.name}
+            </Text>
+          </View>
+        </ImageBackground>
       </TouchableOpacity>
-      
     );
   };
   _generateLessons() {
@@ -156,15 +121,12 @@ class TopicContainer extends Component {
   }
 
   render() {
-
     return (
       <RecyclerListView
         dataProvider={this.state.dataProvider}
         layoutProvider={this._layoutProvider}
         rowRenderer={this._rowRenderer}
         showsVerticalScrollIndicator={false}
-
-
       />
     );
   }
@@ -176,7 +138,6 @@ export default class SpeakingScreen extends Component {
   }
   componentDidMount() {
     console.log("Did mount");
-
   }
 
   constructor(args) {
@@ -186,38 +147,50 @@ export default class SpeakingScreen extends Component {
   }
   _generateArray() {
     this.nameArray = [];
+    console.log("Old array is ");
+    console.log(this.props.data);
     const data = this.props.data;
     for (let i = 0; i < data.length; i++) {
       this.nameArray.push(data[i]);
     }
+    console.log("New array is ");
+    console.log(this.nameArray);
   }
+  _initialPage = () => {
+    console.log("InitialPage goes !");
+    console.log("The index is " + this.props.index);
+    if (this.props.isFromLearning === true) {
+      console.log("Is From Learing is true !");
+      return this.props.index;
+    } else {
+      return 0;
+    }
+  };
 
   render() {
-
+    console.log("Render array is :");
+    console.log(this.nameArray);
     return (
-
-      <ScrollableTabView renderTabBar={() => <ScrollableTabBar
-       underlineStyle={styles.scrollableTabStyle} 
-       />}
+      <ScrollableTabView
+        renderTabBar={() => (
+          <ScrollableTabBar underlineStyle={styles.scrollableTabStyle} />
+        )}
+        initialPage={this._initialPage()}
       >
         {this.nameArray.map(e => (
-          <TopicContainer 
-          tabLabel={e.topicName}
-          _componentId={this.props.componentId}
-          
+          <TopicContainer
+            tabLabel={e.topicName}
+            _componentId={this.props.componentId}
+            topicName={e.topicName}
           />
         ))}
       </ScrollableTabView>
-
-      
-     
-    
     );
   }
 }
 
 const styles = StyleSheet.create({
-  scrollableTabStyle:{
-   height:null 
+  scrollableTabStyle: {
+    height: null
   }
 });

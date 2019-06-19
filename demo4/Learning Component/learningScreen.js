@@ -10,7 +10,9 @@ import {
   Dimensions,
   ImageBackground,
   Alert,
-  Image
+  Image,
+  TouchableWithoutFeedback,
+  TouchableOpacity 
 } from "react-native";
 import { Navigation } from "react-native-navigation";
 import {
@@ -55,28 +57,33 @@ export default class LearningScreen extends Component {
       fakeSpeakingData.push(
         (speakingObj = {
           imageUri: faker.image.avatar(),
-          topicName: faker.name.jobTitle()
+          topicName: faker.name.jobTitle(),
+          index:i,
+          type:"Speaking"
         })
       );
 
       fakeListeningData.push(
         (listeningObj = {
           imageUri: faker.image.avatar(),
-          topicName: faker.name.jobTitle()
+          topicName: faker.name.jobTitle(),
+          index:i,
+          type:"Listening"
         })
       );
 
       fakeRecentLessonsData.push(
         (recentLessonsObj = {
           imageUri: faker.image.avatar(),
-          lessonName: faker.name.jobTitle()
+          lessonName: faker.name.jobTitle(),
+          index:i
         })
       );
     }
 
-    // console.log(fakeSpeakingData);
-    // console.log(fakeListeningData);
-    // console.log(fakeRecentLessonsData);
+    console.log(fakeSpeakingData);
+    console.log(fakeListeningData);
+    console.log(fakeRecentLessonsData);
 
     //dinh ngia layout provider cho child va parent
     this._generateData();
@@ -171,6 +178,7 @@ export default class LearningScreen extends Component {
       }
     }
   }
+ 
 
   _childRowRenderer = (type, data) => {
     console.log("Child Row Renderer");
@@ -178,7 +186,27 @@ export default class LearningScreen extends Component {
     if (type === ViewTypes.Simple_Row) {
       if (Object.keys(data)[1] == "topicName") {
         return (
-          <View
+         <TouchableOpacity 
+            onPress={()=>{
+              Navigation.push(this.props.componentId,{
+                    component:{
+                            name:data.type==='Speaking'?'Speaking':'Listening', 
+                            passProps:{
+                              data:data.type==="Speaking"?fakeSpeakingData:fakeListeningData,
+                              isFromLearning:true,
+                              index:data.index
+                            },options:{
+                              topBar:{
+                                title:{
+                                  text:data.type==='Speaking'?'Speaking':'Listening'
+                                }
+                              }
+                            }
+                          } 
+                  })
+            }}
+         >
+            <View
             style={{ height: 200, elevation: 3, margin: 5, borderRadius: 2 }}
           >
             <Image
@@ -204,10 +232,31 @@ export default class LearningScreen extends Component {
               </Text>
             </View>
           </View>
+         </TouchableOpacity>
         );
       } else {
         return (
-          <View
+          <TouchableOpacity
+           onPress={()=>{
+            // Navigation.push(this.props.componentId,{
+            //       component:{
+            //               name:'Speaking',
+            //               passProps:{
+            //                 data:fakeSpeakingData,
+            //                 isFromLearning:true,
+            //                 index:data.index
+            //               },options:{
+            //                 topBar:{
+            //                   title:{
+            //                     text:'Recent Lesson'
+            //                   }
+            //                 }
+            //               }
+            //             } 
+            //     })
+          }}
+          >
+  <View
             style={{ height: 200, elevation: 3, margin: 5, borderRadius: 2 }}
           >
             <Image
@@ -233,6 +282,8 @@ export default class LearningScreen extends Component {
               </Text>
             </View>
           </View>
+          </TouchableOpacity>
+        
         );
       }
     }
@@ -283,7 +334,7 @@ export default class LearningScreen extends Component {
                     component:{
                             name:'Speaking',
                             passProps:{
-                              data:fakeSpeakingData
+                              data:fakeSpeakingData,
                             },options:{
                               topBar:{
                                 title:{
@@ -291,10 +342,7 @@ export default class LearningScreen extends Component {
                                 }
                               }
                             }
-                          }
-                          
-                          
-                          
+                          } 
                   })
                   
                 }}
@@ -357,7 +405,20 @@ export default class LearningScreen extends Component {
                   justifyContent: "flex-end"
                 }}
                 onPress={() => {
-                  Alert.alert("em");
+                  Navigation.push(this.props.componentId,{
+                    component:{
+                            name:'Listening',
+                            passProps:{
+                              data:fakeListeningData,
+                            },options:{
+                              topBar:{
+                                title:{
+                                  text:'Listening Lessons'
+                                }
+                              }
+                            }
+                          } 
+                  })
                 }}
               >
                 See all
